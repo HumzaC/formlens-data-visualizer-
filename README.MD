@@ -5,37 +5,37 @@ Build custom surveys, import response data via CSV upload or paste, and generate
 
 ---
 
-## 🚀 Features
+##  Features
 
-### 🧩 Survey Builder
+###  Survey Builder
 Create custom surveys with:
 - Multiple choice
 - Checkbox
 - Short answer
 - Rating questions
 
-### 📂 CSV Import
+###  CSV Import
 - Drag & drop CSV files
 - Paste data directly
 - Compatible with exports from Google Forms, Typeform, and more
 
-### 📊 Auto-Generated Reports
+###  Auto-Generated Reports
 - Automatic chart creation
 - Smart column type detection
 - Percentage breakdowns
 
-### ☁️ Word Cloud
+###  Word Cloud
 - Analyze open-ended responses
 - Visualize word frequency
 - Interactive display
 
-### 🖨️ Print to PDF
+###  Print to PDF
 - Clean print layout
 - Export reports easily
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - HTML
 - CSS
@@ -44,7 +44,7 @@ Create custom surveys with:
 
 ---
 
-## ⚡ Getting Started
+##  Getting Started
 
 No installation required — just open in your browser.
 

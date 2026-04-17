@@ -2,17 +2,23 @@
 
 A single-page survey analytics web app. Build custom surveys, import response data via CSV upload or paste, and get auto-generated visual reports with charts, percentage breakdowns, and word clouds — no backend required.
 
+---
+
 ## Features
 
-- **Survey Builder** — add multiple choice, checkbox, short answer, and rating questions
-- **CSV Import** — drag and drop or paste CSV data exported from Google Forms, Typeform, or any survey tool
-- **Auto-generated Reports** — charts and breakdowns are built automatically based on detected column types
-- **Word Cloud** — open-ended text responses are analyzed for word frequency and rendered as an interactive word cloud
-- **Print to PDF** — clean print stylesheet included for exporting reports
+- Survey builder with multiple choice, checkbox, short answer, and rating question types
+- CSV import via drag and drop or paste, compatible with Google Forms, Typeform, and any standard survey export
+- Auto-generated reports with charts and breakdowns based on detected column types
+- Word cloud for open-ended text responses with word frequency analysis
+- Print to PDF with a clean print stylesheet built in
+
+---
 
 ## Tech Stack
 
 HTML, CSS, JavaScript, Chart.js
+
+---
 
 ## Getting Started
 
@@ -24,13 +30,17 @@ cd formlens
 open index.html
 ```
 
+---
+
 ## Usage
 
-1. **Build** — add your survey questions in the Build tab
-2. **Collect** — upload a CSV file or paste your data directly
-3. **Analyze** — view the auto-generated report with charts and insights
+1. Go to the Build tab and add your survey questions
+2. Go to the Collect tab and upload a CSV file or paste your data directly
+3. Go to the Analyze tab to view the auto-generated report
 
-Don't have a CSV file handy? Hit **Load sample dataset** to see the app in action.
+Don't have a CSV file handy? Hit Load sample dataset to see the app in action.
+
+---
 
 ## File Structure
 

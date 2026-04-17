@@ -1,54 +1,40 @@
 # FormLens
 
-**FormLens** is a lightweight, single-page survey analytics web app.  
-Build custom surveys, import response data via CSV upload or paste, and generate visual reports instantly — no backend required.
+A single-page survey analytics web app. Build custom surveys, import response data via CSV upload or paste, and get auto-generated visual reports with charts, percentage breakdowns, and word clouds — no backend required.
 
 ---
 
-##  Features
+## Features
 
-###  Survey Builder
-Create custom surveys with:
-- Multiple choice
-- Checkbox
-- Short answer
-- Rating questions
-
-###  CSV Import
-- Drag & drop CSV files
-- Paste data directly
-- Compatible with exports from Google Forms, Typeform, and more
-
-###  Auto-Generated Reports
-- Automatic chart creation
-- Smart column type detection
-- Percentage breakdowns
-
-###  Word Cloud
-- Analyze open-ended responses
-- Visualize word frequency
-- Interactive display
-
-###  Print to PDF
-- Clean print layout
-- Export reports easily
+- Survey builder with multiple choice, checkbox, short answer, and rating question types
+- CSV import via drag and drop or paste, compatible with Google Forms, Typeform, and any standard survey export
+- Auto-generated reports with charts and breakdowns based on detected column types
+- Word cloud for open-ended text responses with word frequency analysis
+- Print to PDF with a clean print stylesheet built in
 
 ---
 
-##  Tech Stack
+## Tech Stack
 
-- HTML
-- CSS
-- JavaScript
-- Chart.js
+HTML, CSS, JavaScript, Chart.js
 
 ---
 
-##  Getting Started
+## Usage
 
-No installation required — just open in your browser.
+1. Go to the Build tab and add your survey questions
+2. Go to the Collect tab and upload a CSV file or paste your data directly
+3. Go to the Analyze tab to view the auto-generated report
 
-```bash
-git clone https://github.com/your-username/formlens.git
-cd formlens
-open index.html
+Don't have a CSV file handy? Hit Load sample dataset to see the app in action.
+
+---
+
+## File Structure
+
+```
+formlens/
+├── index.html    — markup and layout
+├── styles.css    — all styling
+└── app.js        — survey builder, CSV parsing, chart rendering
+```

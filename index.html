@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FormLens — Survey Analytics</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="logo">Form<span>Lens</span></div>
+
+    <nav class="nav">
+      <button class="nav-btn active" id="nav-build" onclick="switchTab('build')">
+        <span class="nav-icon">✏️</span> Build
+      </button>
+      <button class="nav-btn" id="nav-collect" onclick="switchTab('collect')">
+        <span class="nav-icon">📥</span> Collect
+      </button>
+      <button class="nav-btn" id="nav-analyze" onclick="switchTab('analyze')">
+        <span class="nav-icon">📊</span> Analyze
+      </button>
+    </nav>
+
+    <div class="header-spacer"></div>
+    <button class="btn btn-primary" onclick="loadSampleData(); renderReport();">▶ Get Started</button>
+  </header>
+
+
+  <main class="main">
+
+    <!-- BUILD -->
+    <div class="tab-panel active" id="tab-build">
+      <div class="section-header">
+        <h2>Build Your Survey</h2>
+        <p>Add questions, choose types, and configure your form.</p>
+      </div>
+
+      <input
+        type="text"
+        class="survey-title-input"
+        id="survey-title"
+        placeholder="Untitled Survey"
+        value="My Survey"
+      />
+
+      <div id="question-list"></div>
+
+      <div class="empty-state" id="empty-state">
+        <span>🗒️</span>
+        <p>No questions yet. Add one below to get started.</p>
+      </div>
+
+      <div class="add-q-toolbar">
+        <span class="toolbar-label">Add question:</span>
+        <button class="type-btn" onclick="addQuestion('multiple_choice')">🔵 Multiple Choice</button>
+        <button class="type-btn" onclick="addQuestion('checkbox')">☑️ Checkboxes</button>
+        <button class="type-btn" onclick="addQuestion('text')">💬 Short Answer</button>
+        <button class="type-btn" onclick="addQuestion('rating')">⭐ Rating (1–5)</button>
+      </div>
+    </div>
+
+
+    <!-- COLLECT -->
+    <div class="tab-panel" id="tab-collect">
+      <div class="section-header">
+        <h2>Collect Responses</h2>
+        <p>Upload a CSV export from Google Forms, or paste your data directly.</p>
+      </div>
+
+      <div class="data-summary hidden" id="data-summary">
+        <div class="summary-dot"></div>
+        <div class="summary-text">
+          <strong id="summary-title">Data loaded</strong>
+          <span id="summary-sub">Ready to analyze</span>
+        </div>
+        <button class="btn btn-clear" onclick="clearData()">&#x2715; Clear</button>
+      </div>
+
+      <div class="stat-row hidden" id="stat-row">
+        <div class="stat-card">
+          <div class="stat-num" id="stat-responses">0</div>
+          <div class="stat-label">Responses</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-questions">0</div>
+          <div class="stat-label">Questions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-columns">0</div>
+          <div class="stat-label">Columns</div>
+        </div>
+      </div>
+
+      <div class="inner-tabs">
+        <button class="inner-tab active" id="itab-upload" onclick="switchCollectTab('upload')">
+          &#x1F4C1; Upload CSV
+        </button>
+        <button class="inner-tab" id="itab-paste" onclick="switchCollectTab('paste')">
+          &#x1F4CB; Paste Data
+        </button>
+      </div>
+
+      <div class="collect-panel active" id="cpanel-upload">
+        <label class="upload-zone" id="upload-zone" for="csv-file-input">
+          <input
+            type="file"
+            id="csv-file-input"
+            accept=".csv"
+            style="display:none;"
+            onchange="handleFileSelect(this)"
+          />
+          <span class="upload-icon">&#x1F4C2;</span>
+          <h3>Drop your CSV file here</h3>
+          <p>or click to browse your files</p>
+          <span class="upload-hint">.csv only &mdash; exported from Google Forms, Typeform, or any survey tool</span>
+        </label>
+
+        <div class="sample-row">
+          <span>Don't have a CSV handy?</span>
+          <button class="btn btn-ghost btn-sm" onclick="loadSampleData()">&#x2728; Load sample dataset</button>
+        </div>
+      </div>
+
+      <div class="collect-panel" id="cpanel-paste">
+        <div class="card">
+          <label class="field-label">Paste CSV data</label>
+          <p class="field-hint">
+            Copy from Google Sheets (File &rarr; Download &rarr; CSV) or paste any
+            comma-separated data. First row must be column headers.
+          </p>
+          <textarea
+            id="paste-input"
+            class="paste-area"
+            placeholder="Timestamp,Satisfaction,Rating,Suggestions
+2024-01-15,Very Satisfied,5,Better documentation
+2024-01-16,Satisfied,4,More team events"
+          ></textarea>
+          <div class="paste-actions">
+            <button class="btn btn-primary" onclick="parsePastedData()">Parse Data</button>
+            <button class="btn btn-ghost" onclick="fillPasteExample()">Fill example</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-section hidden" id="preview-section">
+        <div class="preview-header">
+          <h3>Preview <span id="preview-count"></span></h3>
+          <span class="preview-note">Showing first 5 rows</span>
+        </div>
+        <div class="table-scroll">
+          <table class="preview-table" id="preview-table"></table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ANALYZE -->
+    <div class="tab-panel" id="tab-analyze">
+      <div class="section-header">
+        <h2>Analyze Results</h2>
+        <p>Charts, percentages, and insights — auto-generated from your data.</p>
+      </div>
+
+      <div class="no-data-state" id="no-data-state">
+        <span>&#x1F4CA;</span>
+        <h3>No data loaded yet</h3>
+        <p>Go to <strong>Collect</strong> to upload a CSV or load the sample dataset,<br/>then come back here to see your report.</p>
+        <div class="no-data-actions">
+          <button class="btn btn-ghost" onclick="switchTab('collect')">Go to Collect</button>
+          <button class="btn btn-primary" onclick="loadSampleData(); switchTab('analyze'); renderReport();">&#x2728; Load sample &amp; analyze</button>
+        </div>
+      </div>
+
+      <div id="report-body" class="hidden">
+        <div class="report-hero">
+          <div class="report-hero-text">
+            <div class="report-hero-label">Survey Report</div>
+            <h2 id="report-title">Results</h2>
+            <p id="report-subtitle"></p>
+          </div>
+          <div class="report-hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-num" id="hero-responses">0</div>
+              <div class="hero-stat-label">Responses</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num" id="hero-questions">0</div>
+              <div class="hero-stat-label">Questions</div>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-sm print-btn" onclick="printReport()">
+            &#x1F5A8; Print Report
+          </button>
+        </div>
+
+        <div id="report-cards"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

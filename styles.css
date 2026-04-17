@@ -1,0 +1,1265 @@
+:root {
+  /* Backgrounds — layered from darkest to lightest */
+  --bg:       #09090f;
+  --surface:  #111118;
+  --card:     #16161f;
+  --card2:    #1d1d2a;
+
+  /* Borders */
+  --border:   #252535;
+  --border2:  #353550;
+
+  /* Brand accent */
+  --amber:     #f5b800;
+  --amber-dim: rgba(245, 184, 0, 0.1);
+
+  /* Text hierarchy */
+  --text:  #dddce8;   /* Primary */
+  --text2: #9999b8;   /* Secondary / muted */
+  --text3: #45455a;   /* Tertiary / placeholder */
+
+  /* Shape */
+  --radius:    12px;
+  --radius-sm:  8px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Dot-grid texture — drawn as a pseudo-element so no extra HTML needed */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.5;
+  pointer-events: none; /* Clicks pass through — doesn't block buttons */
+  z-index: 0;           /* Behind all page content */
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 62px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: rgba(9, 9, 15, 0.88); /* Semi-transparent so blur works */
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-spacer {
+  flex: 1; /* Pushes the action button to the far right */
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--amber);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* The "Lens" portion — white for two-tone contrast effect */
+.logo span {
+  color: var(--text);
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text2);
+  transition: all 0.2s;
+  position: relative; /* Needed so ::after underline positions correctly */
+}
+
+.nav-btn:hover {
+  color: var(--text);
+  background: var(--card2);
+}
+
+/* Active state — the currently selected tab */
+.nav-btn.active {
+  color: var(--amber);
+  background: var(--amber-dim);
+}
+
+/* Amber underline bar on the active tab */
+.nav-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; /* Sits flush on the header's bottom border */
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--amber);
+  border-radius: 2px 2px 0 0;
+}
+
+.nav-icon {
+  font-size: 1rem;
+}
+
+.main {
+  max-width: 1060px;
+  margin: 0 auto;          /* Centers the container horizontally */
+  padding: 40px 24px 100px;
+  position: relative;
+  z-index: 1;              /* Sits above the dot-grid background (z-index: 0) */
+}
+
+/* Hidden by default */
+.tab-panel {
+  display: none;
+}
+
+/* Visible when JavaScript adds the "active" class */
+.tab-panel.active {
+  display: block;
+  animation: fadeUp 0.3s ease;
+}
+
+/* Panel fade-in animation — slides up from 10px below while fading in */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-header {
+  margin-bottom: 32px;
+}
+
+.section-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.section-header p {
+  color: var(--text2);
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.btn-primary {
+  background: var(--amber);
+  color: #000;
+}
+
+.btn-primary:hover {
+  background: #ffc400;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(245, 184, 0, 0.35);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text);
+}
+
+.btn-ghost:hover {
+  background: var(--card2);
+}
+
+.survey-title-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 6px 2px 10px;
+  margin-bottom: 24px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.survey-title-input:focus {
+  border-color: var(--amber);
+}
+
+.survey-title-input::placeholder {
+  color: var(--text3);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  border: 2px dashed var(--border2);
+  border-radius: var(--radius);
+  color: var(--text3);
+  margin-bottom: 20px;
+}
+
+.empty-state span {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 10px;
+  filter: grayscale(0.4);
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+}
+
+#question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  /* Slide-in animation when a new card is added */
+  animation: fadeUp 0.25s ease;
+}
+
+.q-card:hover {
+  border-color: var(--border2);
+}
+
+.q-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+/* "Q1", "Q2" etc — monospace so numbers don't shift layout */
+.q-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text3);
+  font-family: monospace;
+  min-width: 22px;
+}
+
+/* Coloured pill showing the question type (e.g. "Multiple Choice") */
+.q-type-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tag-multiple_choice { background: rgba(155, 127, 255, 0.12); color: #a78bff; border: 1px solid rgba(155,127,255,0.25); }
+.tag-checkbox        { background: rgba(0, 212, 168, 0.10);   color: #00d4a8; border: 1px solid rgba(0,212,168,0.25); }
+.tag-text            { background: rgba(245, 184, 0, 0.10);   color: var(--amber); border: 1px solid rgba(245,184,0,0.25); }
+.tag-rating          { background: rgba(255, 94, 125, 0.10);  color: #ff5e7d; border: 1px solid rgba(255,94,125,0.25); }
+
+/*
+  The question text input — fills all remaining space in the header row.
+  flex: 1 means "take up whatever horizontal space is left after siblings".
+*/
+.q-text-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent; /* Invisible until focused */
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 4px 2px;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0; /* Prevents flex overflow on small screens */
+}
+
+.q-text-input:focus {
+  border-color: var(--border2);
+}
+
+.q-text-input::placeholder {
+  color: var(--text3);
+  font-weight: 400;
+}
+
+/* Delete button — shows faint, turns red on hover */
+.q-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  line-height: 1;
+  transition: all 0.18s;
+  flex-shrink: 0;
+}
+
+.q-delete-btn:hover {
+  color: #ff5e7d;
+  background: rgba(255, 94, 125, 0.1);
+}
+
+.q-card-body {
+  padding: 0 20px 18px;
+  border-top: 1px solid var(--border);
+}
+
+/* Each answer option row — input + remove button side by side */
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Small circle to indicate radio/checkbox visually */
+.option-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  flex-shrink: 0;
+}
+
+/* Checkbox type gets a rounded-square dot instead */
+.dot-checkbox {
+  border-radius: 3px;
+}
+
+.option-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  padding: 7px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.option-input:focus {
+  border-color: var(--amber);
+}
+
+.option-input::placeholder {
+  color: var(--text3);
+}
+
+/* Small "×" button to remove an individual option */
+.option-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: all 0.15s;
+}
+
+.option-remove-btn:hover {
+  color: #ff5e7d;
+}
+
+/* "+ Add option" link at the bottom of the options list */
+.add-option-btn {
+  background: none;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.18s;
+}
+
+.add-option-btn:hover {
+  color: var(--amber);
+}
+
+/* Rating preview — just shows the 5 stars as non-interactive display */
+.rating-preview {
+  padding: 12px 0 4px;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  color: var(--amber);
+}
+
+.rating-note {
+  font-size: 0.78rem;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+/* Short answer preview — a disabled input showing what respondents will see */
+.text-preview-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px dashed var(--border2);
+  border-radius: var(--radius-sm);
+  color: var(--text3);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  padding: 9px 12px;
+  margin-top: 12px;
+  cursor: not-allowed;
+  outline: none;
+}
+
+.add-q-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.toolbar-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text3);
+  white-space: nowrap;
+  margin-right: 4px;
+}
+
+.type-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text2);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.type-btn:hover {
+  color: var(--text);
+  border-color: var(--border2);
+  background: var(--card2);
+  transform: translateY(-1px);
+}
+
+.placeholder-box {
+  text-align: center;
+  padding: 60px 24px 40px;
+}
+
+.placeholder-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  display: block;
+  filter: grayscale(0.3);
+}
+
+.placeholder-box h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.placeholder-box p {
+  color: var(--text2);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.phase-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 5px 14px;
+  background: var(--amber-dim);
+  border: 1px solid rgba(245, 184, 0, 0.3);
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.04em;
+}
+
+.data-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background: rgba(0, 200, 140, 0.08);
+  border: 1px solid rgba(0, 200, 140, 0.25);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.summary-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #00c88c;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(0, 200, 140, 0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0, 200, 140, 0.4); }
+  70%  { box-shadow: 0 0 0 8px rgba(0, 200, 140, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 200, 140, 0); }
+}
+
+.summary-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-text strong { font-size: 0.9rem; color: #00c88c; }
+.summary-text span   { font-size: 0.78rem; color: var(--text2); }
+
+.btn-clear {
+  margin-left: auto;
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text3);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-clear:hover { color: #ff5e7d; background: rgba(255, 94, 125, 0.08); }
+
+.hidden { display: none !important; }
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--amber);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--text2);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.inner-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.inner-tab {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text2);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.inner-tab:hover  { color: var(--text); border-color: var(--border2); }
+.inner-tab.active { background: var(--amber); border-color: var(--amber); color: #000; }
+
+.collect-panel        { display: none; }
+.collect-panel.active { display: block; animation: fadeUp 0.25s ease; }
+
+.upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 56px 24px;
+  border: 2px dashed var(--border2);
+  border-radius: var(--radius);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+}
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: var(--amber);
+  background: var(--amber-dim);
+  transform: scale(1.01);
+}
+
+.upload-icon   { font-size: 2.8rem; line-height: 1; margin-bottom: 4px; }
+.upload-zone h3 { font-size: 1rem; font-weight: 600; color: var(--text); }
+.upload-zone p  { font-size: 0.875rem; color: var(--text2); }
+.upload-hint   { font-size: 0.75rem; color: var(--text3); margin-top: 4px; }
+
+.sample-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+
+.btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+
+.field-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.field-hint {
+  font-size: 0.82rem;
+  color: var(--text2);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.paste-area {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  padding: 12px 14px;
+  min-height: 140px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+.paste-area:focus       { border-color: var(--amber); }
+.paste-area::placeholder { color: var(--text3); }
+
+.paste-actions { display: flex; gap: 10px; margin-top: 14px; }
+
+.preview-section { margin-top: 24px; }
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.preview-header h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; }
+.preview-header h3 span { color: var(--text2); font-size: 0.85rem; font-weight: 400; font-family: 'Outfit', sans-serif; }
+.preview-note { font-size: 0.78rem; color: var(--text3); }
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.preview-table th {
+  background: var(--card2);
+  color: var(--text2);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.preview-table td {
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-table tr:nth-child(even) td { background: var(--surface); }
+.preview-table tr:last-child td      { border-bottom: none; }
+
+/* ── NO DATA STATE ─────────────────────────── */
+.no-data-state {
+  text-align: center;
+  padding: 72px 24px;
+  border: 2px dashed var(--border2);
+  border-radius: var(--radius);
+  color: var(--text2);
+}
+
+.no-data-state span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 16px;
+  filter: grayscale(0.3);
+}
+
+.no-data-state h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.no-data-state p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.no-data-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+/* ── REPORT HERO BANNER ─────────────────────── */
+.report-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+
+.report-hero-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--amber);
+  margin-bottom: 6px;
+}
+
+.report-hero-text h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.report-hero-text p {
+  color: var(--text2);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.report-hero-stats {
+  display: flex;
+  gap: 32px;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--amber);
+  line-height: 1;
+}
+
+.hero-stat-label {
+  font-size: 0.75rem;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* ── REPORT CARDS ───────────────────────────── */
+/*
+  Each column in the CSV gets its own .report-card.
+  app.js creates these dynamically and injects them into #report-cards.
+*/
+#report-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  animation: fadeUp 0.3s ease;
+}
+
+.report-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.report-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.report-card-meta {
+  font-size: 0.78rem;
+  color: var(--text2);
+  margin-top: 4px;
+}
+
+/* Pill showing the detected column type (Categorical, Numeric, Text) */
+.col-type-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.type-categorical { background: rgba(155,127,255,0.12); color: #a78bff; border: 1px solid rgba(155,127,255,0.25); }
+.type-numeric     { background: rgba(0,212,168,0.10);   color: #00d4a8; border: 1px solid rgba(0,212,168,0.25); }
+.type-text        { background: rgba(245,184,0,0.10);   color: var(--amber); border: 1px solid rgba(245,184,0,0.25); }
+.type-timestamp   { background: rgba(255,255,255,0.05); color: var(--text3); border: 1px solid var(--border); }
+
+/* ── CHART + BREAKDOWN LAYOUT ───────────────── */
+/*
+  For categorical columns we show a pie chart AND a bar breakdown
+  side by side. On small screens they stack vertically.
+*/
+.chart-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .chart-layout { grid-template-columns: 1fr; }
+}
+
+/*
+  The <canvas> element is what Chart.js draws onto.
+  We constrain its size so pie charts don't grow huge.
+*/
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+/* ── PERCENTAGE BREAKDOWN BARS ──────────────── */
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.breakdown-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.breakdown-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.breakdown-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.breakdown-stats {
+  font-size: 0.78rem;
+  color: var(--text2);
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+/*
+  The progress bar track — the grey background.
+  The fill inside animates from 0 to the target width via CSS transition.
+*/
+.breakdown-track {
+  height: 8px;
+  background: var(--surface);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.breakdown-fill {
+  height: 100%;
+  border-radius: 4px;
+  /*
+    We set width via JavaScript (style.width = '72%').
+    The transition makes it animate from 0 on first render.
+  */
+  transition: width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 0;
+}
+
+/* ── NUMERIC COLUMN — BAR CHART FULL WIDTH ───── */
+.chart-wrap-full {
+  position: relative;
+  width: 100%;
+  height: 260px;
+}
+
+/* ── TEXT COLUMN — RESPONSE LIST ─────────────── */
+.response-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.response-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: var(--text2);
+  line-height: 1.6;
+  position: relative;
+  padding-left: 28px;
+}
+
+/* Decorative quote mark */
+.response-item::before {
+  content: '"';
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 1.2rem;
+  color: var(--amber);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.response-more {
+  font-size: 0.8rem;
+  color: var(--text3);
+  text-align: center;
+  padding: 8px;
+}
+
+/* ── TIMESTAMP COLUMN ─────────────────────────── */
+.timestamp-note {
+  color: var(--text3);
+  font-size: 0.85rem;
+  padding: 12px 0;
+}
+
+/* ── PRINT BUTTON ──────────────────────────────── */
+.print-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ── WORD CLOUD CONTAINER ──────────────────────── */
+
+.word-cloud {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.cloud-word {
+  position: absolute;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: default;
+  transition: transform 0.2s, opacity 0.2s;
+  /*
+    Words fade in staggered using animation-delay set inline by JS.
+    The fadeIn keyframe is defined below.
+  */
+  animation: wordFadeIn 0.4s ease both;
+}
+
+.cloud-word:hover {
+  transform: scale(1.15);
+  opacity: 1 !important;
+  z-index: 10;
+}
+
+@keyframes wordFadeIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── WORD FREQUENCY TABLE ──────────────────────── */
+/*
+  Below the word cloud we show a simple ranked table
+  of the top words and their counts.
+*/
+.word-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.word-table th {
+  text-align: left;
+  color: var(--text3);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0 0 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.word-table td {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: middle;
+}
+
+.word-table td:first-child {
+  color: var(--text);
+  font-weight: 600;
+  width: 40%;
+}
+
+.word-table td:last-child {
+  text-align: right;
+  font-family: monospace;
+  color: var(--text3);
+}
+
+/* Mini inline bar inside the frequency table */
+.word-freq-bar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--amber);
+  vertical-align: middle;
+  margin-right: 8px;
+  transition: width 0.6s ease;
+}
+
+/* ── GENERAL POLISH ────────────────────────────── */
+
+/* Smooth focus ring on all interactive elements */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* Make the header nav wrap on very small screens */
+@media (max-width: 540px) {
+  .header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 12px 16px;
+    gap: 10px;
+  }
+  .header-spacer { display: none; }
+  .nav { order: 3; width: 100%; }
+  .main { padding: 24px 16px 80px; }
+}
+
+/* ── @MEDIA PRINT ──────────────────────────────── */
+
+@media print {
+  /* Hide all navigation and interactive chrome */
+  .header,
+  .no-data-state,
+  .print-btn,
+  .add-q-toolbar,
+  #tab-build,
+  #tab-collect {
+    display: none !important;
+  }
+
+  /* Force the Analyze tab to show regardless of active state */
+  #tab-analyze {
+    display: block !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  /* Light mode overrides for cards */
+  .report-hero,
+  .report-card {
+    background: #fff !important;
+    border-color: #ddd !important;
+    box-shadow: none !important;
+    break-inside: avoid; /* Don't split a card across two pages */
+  }
+
+  .report-card-title,
+  .breakdown-label,
+  .report-hero-text h2 {
+    color: #111 !important;
+  }
+
+  .report-hero-label,
+  .hero-stat-num,
+  .stat-num {
+    color: #c49000 !important; /* Darker amber — legible on white paper */
+  }
+
+  /* Make sure charts are full width when printed */
+  .chart-layout {
+    grid-template-columns: 180px 1fr !important;
+  }
+
+  /* Page break hints */
+  .report-hero { margin-bottom: 20px; }
+
+  /* Remove animations — not needed for print */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
